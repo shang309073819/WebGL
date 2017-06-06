@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>第一个WegGL小程序</title>
+</head>
+<body>
+<canvas id="webgl" width="500" height="500"></canvas>
+<script>
+    function initShader(gl, vertexShaderSource, fragmentShaderSource) {
+        //创建顶点着色器对象
+        var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        //创建片元着色器对象
+        var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+
+        //加入源代码
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+
+        //编译源代码
+        gl.compileShader(vertexShader);
+        gl.compileShader(fragmentShader);
+
+        //创建program
+        var program = gl.createProgram();
+
+        //附着顶点和片元着色器到program
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+
+        //链接program
+        gl.linkProgram(program);
+
+        //使用program
+        gl.useProgram(program);
+        //调试片元着色器
+        console.log(gl.getShaderInfoLog(fragmentShader));
+        //返回program
+        return program;
+    }
+</script>
+<script>
+    //  得到canvas标签
+    var canvasElement = document.getElementById('webgl');
+    //  webgl 3D上下文环境
+    var context = canvasElement.getContext('webgl');
+
+    /**
+     * 顶点着色器程序
+     * gl_PointSize: 点的大小（像素）
+     * gl_Position： 点的位置
+     */
+    var vertexShaderSource = '' +
+        'attribute vec4 apos;' +
+        'void main(){' +
+        '   gl_PointSize=20.0;' +
+        '   gl_Position = apos;' +
+        '}';
+
+    /**
+     * 片元着色器程序
+     * gl_FragColor：颜色
+     */
+    var fragShaderSource = '' +
+        'void main(){' +
+        '   gl_FragColor = vec4(1.0,0.0,0.0,1.0);' +
+        '}';
+
+    // 把WebGL的程序进行编译
+    var program = initShader(context, vertexShaderSource, fragShaderSource);
+    var aposLocation = context.getAttribLocation(program, 'apos');
+
+    context.clearColor(0.2, 0.3, 0.5, 1.0);
+    context.clear(context.COLOR_BUFFER_BIT);
+
+    var x = 0.0;
+    var y = 0.0;
+    for (var i = 0, j = 0.1; i < 10; i++) {
+        x += j;
+        y += j;
+        context.vertexAttrib4f(aposLocation, x, y, 0.0, 1.0);
+        context.drawArrays(context.POINTS, 0, 1);
+    }
+</script>
+</body>
+</html>
