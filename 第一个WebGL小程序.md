@@ -1,3 +1,44 @@
+#### 第一个WebGL小程序
+
+**WebGL是什么：**
+
+- 在浏览器绘制 3D 图形
+- 内嵌在浏览器中
+- 多平台运行
+- 基于 OpenGL ES 2.0
+
+
+**图像硬件简介：**
+
+![](./img/TB1f.FxRFXXXXclapXXXXXXXXXX-685-375.png)
+
+
+**WebGL 程序执行原理— 图形流水线：**
+
+![](./img/TB1cbakRFXXXXaUXXXXXXXXXXXX-666-279.png)
+
+**开发 WebGL 程序的基本步骤：**
+
+1. 得到 canvas 标签
+2. 得到绘制上下文对象
+3. 编写着色器
+4. 初始化着色器
+5. 绘制
+
+**着色器的初始化与调试— 初始化着色器步骤：**
+
+1. 创建顶点着色器
+2. 把源代码导入着色器对象
+3. 对着色器对象进行编译
+4. 创建 program
+5. 附着顶点和片元着色器到  program
+6. 链接 program
+7. 使用 program
+
+
+**源代码：**
+
+```html
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,6 +48,7 @@
 <body>
 <canvas id="webgl" width="500" height="500"></canvas>
 <script>
+    // 初始化着色器
     function initShader(gl, vertexShaderSource, fragmentShaderSource) {
         //创建顶点着色器对象
         var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -84,3 +126,4 @@
 </script>
 </body>
 </html>
+```
